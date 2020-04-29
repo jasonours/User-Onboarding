@@ -35,16 +35,14 @@ const Form = () => {
             setErrors({ ...errors, [e.target.name]: "" });
         })
         .catch(err => {
-            console.log("error!", err);
+            console.log("Error!!!", err);
             setErrors({ ...errors, [e.target.name]: err.errors[0] });
         });
     };
 
-    console.log("error state", errors);
-    
     useEffect(() => {
         formSchema.isValid(formState).then(valid => {
-            console.log("valid?", valid);
+            console.log("Valid?!?", valid);
             setIsButtonDisabled(!valid);
         });
     }, [formState]);
@@ -70,7 +68,7 @@ const Form = () => {
     };
 
     const inputChange = e => {
-        console.log("input changed!", e.target.value);
+        console.log("Input changed!", e.target.value);
         e.persist();
         const newFormData = {
         ...formState, [e.target.name]: e.target.type === "checkbox" ? e.target.checked : e.target.value
