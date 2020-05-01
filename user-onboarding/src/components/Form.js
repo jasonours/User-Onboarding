@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import * as yup from "yup";
 import axios from "axios";
+import { Name, Email, Password, Position, Term } from "./Styles"
 
 const Form = () => {
 
@@ -30,13 +31,13 @@ const Form = () => {
         terms: yup.boolean().oneOf([true], "Read our Terms and Agree to continue."),
     });
 
-    const validateChange = e => {
-        yup.reach(formSchema, e.target.name).validate(e.target.value).then(valid => {
-            setErrors({ ...errors, [e.target.name]: "" });
+    const validateChange = event => {
+        yup.reach(formSchema, event.target.name).validate(event.target.value).then(valid => {
+            setErrors({ ...errors, [event.target.name]: "" });
         })
         .catch(err => {
             console.log("Error!!!", err);
-            setErrors({ ...errors, [e.target.name]: err.errors[0] });
+            setErrors({ ...errors, [event.target.name]: err.errors[0] });
         });
     };
 
@@ -47,8 +48,8 @@ const Form = () => {
         });
     }, [formState]);
 
-    const formSubmit = e => {
-        e.preventDefault();
+    const formSubmit = event => {
+        event.preventDefault();
         axios.post("https://reqres.in/api/users", formState)
         .then(response => {
             setPost(response.data);
@@ -67,38 +68,38 @@ const Form = () => {
         }); 
     };
 
-    const inputChange = e => {
-        console.log("Input changed!", e.target.value);
-        e.persist();
+    const inputChange = event => {
+        console.log("Input changed!", event.target.value);
+        event.persist();
         const newFormData = {
-        ...formState, [e.target.name]: e.target.type === "checkbox" ? e.target.checked : e.target.value
+        ...formState, [event.target.name]: event.target.type === "checkbox" ? event.target.checked : event.target.value
         };
-        validateChange(e);
+        validateChange(event);
         setFormState(newFormData);
     };
 
     return (
         <form onSubmit={formSubmit}>
             {serverError ? <p className="error">{serverError}</p> : null}
-            <label htmlFor="name">
+            <Name htmlFor="name">
                 Name
-                <input id="name" type="text" name="name" onChange={inputChange} value={formState.name} />
+                <input id="name" type="text" name="name" onChange={inputChange} value={formState.name} data-cy="name" />
                 {errors.name.length > 0 ? (<p className="error">{errors.name}</p>) : null}
-            </label>
+            </Name>
 
-            <label htmlFor="email">
+            <Email htmlFor="email">
                 Email
-                <input id="email" type="text" name="email" onChange={inputChange} value={formState.email} />
+                <input id="email" type="text" name="email" onChange={inputChange} value={formState.email} data-cy="email" />
                 {errors.email.length > 0 ? (<p className="error">{errors.email}</p>) : null}
-            </label>
+            </Email>
 
-            <label htmlFor="password">
+            <Password htmlFor="password">
                 Password
-                <input id="password" type="text" name="password" onChange={inputChange} value={formState.password} />
+                <input id="password" type="text" name="password" onChange={inputChange} value={formState.password} data-cy="password" />
                 {errors.password.length > 0 ? (<p className="error">{errors.password}</p>) : null}
-            </label>
+            </Password>
 
-            <label htmlFor="positions">
+            <Position htmlFor="positions">
                 Position
                 <select id="positions" name="positions" onChange={inputChange}>
                     <option value="">--Please choose a position--</option>
@@ -109,12 +110,12 @@ const Form = () => {
                     <option value="DataScience">Data Science</option>
                 </select>
                 {errors.positions.length > 0 ? (<p className="error">{errors.positions}</p>) : null}
-            </label>
+            </Position>
 
-            <label htmlFor="terms" className="terms">
+            <Term htmlFor="terms" className="terms">
                 <input id="terms" type="checkbox" name="terms" checked={formState.terms} onChange={inputChange} />
                 Terms & Conditions
-            </label>
+            </Term>
 
             <pre>{JSON.stringify(post, null, 2)}</pre>
 

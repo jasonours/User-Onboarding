@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import "./styles.css";
 import "./App.css";
 import Form from "./components/Form";
+import { Heading } from "./components/Styles"
 
 function App() {
 
   return (
     <div className="App">
-      <h1>User Sign-Up</h1>
+      <Heading>User Sign-Up</Heading>
       <Form />
     </div>
   );
